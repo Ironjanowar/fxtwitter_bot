@@ -27,9 +27,28 @@ defmodule FxtwitterBot.Bot do
     answer(context, message, opts)
   end
 
-  def handle({:text, text, received_message}, context) do
-    with {:ok, {message, opts}} <- FxtwitterBot.maybe_fix(text, received_message) do
+  def handle({:text, text, %{message_id: message_id}}, context) do
+    with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
+      opts = [reply_to_message_id: message_id]
       answer(context, message, opts)
     end
+  end
+
+  def handle({:inline_query, %{query: text}}, context) do
+    with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
+      articles = generate_articles(message)
+      answer_inline_query(context, articles)
+    end
+  end
+
+  defp generate_articles(message) do
+    [
+      %ExGram.Model.InlineQueryResultArticle{
+        type: "article",
+        id: "1",
+        title: "Fix Twitter preview",
+        input_message_content: %ExGram.Model.InputTextMessageContent{message_text: message}
+      }
+    ]
   end
 end

@@ -1,10 +1,8 @@
 defmodule FxtwitterBot do
   @twitter_url "twitter.com"
-  def maybe_fix(text, received_message) when is_binary(text) do
-    with {:ok, _} <- contains_twitter_url?(text),
-         {:ok, message} <- replace_urls(text) do
-      opts = [reply_to_message_id: received_message.message_id]
-      {:ok, {message, opts}}
+  def maybe_fix(text) when is_binary(text) do
+    with {:ok, _} <- contains_twitter_url?(text) do
+      replace_urls(text)
     end
   end
 
