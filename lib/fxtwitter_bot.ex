@@ -1,25 +1,17 @@
 defmodule FxtwitterBot do
-  @twitter_url "twitter.com"
+  @twitter_regex ~r/https?:\/\/(www\.)?twitter.com/
   def maybe_fix(text) when is_binary(text) do
-    with {:ok, _} <- contains_twitter_url?(text) do
+    if String.match?(text, @twitter_regex) do
       replace_urls(text)
+    else
+      {:error, "No match"}
     end
   end
 
   def maybe_fix(_), do: {:error, "Not a string"}
 
-  def contains_twitter_url?(text) when is_binary(text) do
-    if String.contains?(text, @twitter_url) do
-      {:ok, text}
-    else
-      {:error, "No urls"}
-    end
-  end
-
-  def contains_twitter_url?(_), do: {:error, "Not a string"}
-
   def replace_urls(text) when is_binary(text) do
-    result = String.replace(text, @twitter_url, "fxtwitter.com")
+    result = Regex.replace(@twitter_regex, text, "https://fxtwitter.com")
     {:ok, result}
   end
 
