@@ -1,5 +1,5 @@
 defmodule FxtwitterBot do
-  @twitter_regex ~r/https?:\/\/(www\.)?twitter.com/
+  @twitter_regex ~r/https?:\/\/(www\.|mobile\.)?twitter.com/
   def maybe_fix(text) when is_binary(text) do
     if String.match?(text, @twitter_regex) do
       replace_urls(text)
