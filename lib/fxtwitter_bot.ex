@@ -1,5 +1,5 @@
 defmodule FxtwitterBot do
-  alias FxtwitterBot.RedisClient
+  alias FxtwitterBot.{MessageFormatter, RedisClient}
 
   import ExGram.Dsl.Keyboard
 
@@ -21,51 +21,12 @@ defmodule FxtwitterBot do
 
   def replace_urls(_), do: {:error, "Not a string"}
 
-  def help() do
-    message = """
-    This bots fixes Twitter links using [FixTweet](https://github.com/FixTweet/FixTweet), whenever it detects a Twitter link it will try to fix it
-
-    Use /config to select if the bot should delete or answer the original message
-
-    _Add the bot to any chat and give him administrator permissions so it can read all the messages_
-    """
-
-    opts = [parse_mode: "MarkdownV2"]
-
-    {message, opts}
-  end
-
-  def about() do
-    message = """
-    _This bot was made by [@Ironjanowar](https://github.com/Ironjanowar) with ❤️_
-
-    If you want to share some love and give a star ⭐️ to the repo [here it is](https://github.com/Ironjanowar/fxtwitter_bot)
-    """
-
-    opts = [parse_mode: "MarkdownV2"]
-
-    {message, opts}
-  end
-
   def config(chat_id) do
     delete_message? = get_config(chat_id)
     keyboard = generate_keyboard(delete_message?, chat_id)
     opts = [parse_mode: "MarkdownV2", reply_markup: keyboard]
 
-    message =
-      if delete_message? do
-        """
-        Message delete: *ENABLED*
-
-        The bot will delete the message that it fixes
-        """
-      else
-        """
-        Message delete: *DISABLED*
-
-        The bot will answer the message that it fixes
-        """
-      end
+    message = MessageFormatter.config(delete_message?)
 
     {message, opts}
   end
@@ -136,22 +97,9 @@ defmodule FxtwitterBot do
 
   def maybe_add_from(deleted_message?, message, from) do
     if deleted_message? do
-      add_from(message, from)
+      MessageFormatter.add_from(message, from)
     else
       message
     end
   end
-
-  defp add_from(message, from) do
-    name = get_name(from)
-
-    """
-    Shared by #{name}
-
-    #{message}
-    """
-  end
-
-  defp get_name(%{username: nil, first_name: first_name}), do: first_name
-  defp get_name(%{username: username}), do: "@#{username}"
 end

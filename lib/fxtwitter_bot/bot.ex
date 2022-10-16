@@ -1,6 +1,8 @@
 defmodule FxtwitterBot.Bot do
   @bot :fxtwitter_bot
 
+  alias FxtwitterBot.MessageFormatter
+
   use ExGram.Bot,
     name: @bot,
     setup_commands: true
@@ -19,12 +21,12 @@ defmodule FxtwitterBot.Bot do
   end
 
   def handle({:command, :help, _msg}, context) do
-    {message, opts} = FxtwitterBot.help()
+    {message, opts} = MessageFormatter.help()
     answer(context, message, opts)
   end
 
   def handle({:command, :about, _msg}, context) do
-    {message, opts} = FxtwitterBot.about()
+    {message, opts} = MessageFormatter.about()
     answer(context, message, opts)
   end
 
