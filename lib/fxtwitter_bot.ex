@@ -146,9 +146,9 @@ defmodule FxtwitterBot do
     name = get_name(from)
 
     """
-    #{message}
-
     _Shared by_ [#{name}](tg://user?id=#{id})
+
+    #{message}
     """
   end
 
