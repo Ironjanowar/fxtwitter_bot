@@ -26,7 +26,8 @@ defmodule FxtwitterBot.MixProject do
       {:tesla, "~> 1.2"},
       {:hackney, "~> 1.12"},
       {:jason, "~> 1.4.0"},
-      {:logger_file_backend, "0.0.12"}
+      {:logger_file_backend, "0.0.12"},
+      {:redix, "~> 1.1"}
     ]
   end
 end
