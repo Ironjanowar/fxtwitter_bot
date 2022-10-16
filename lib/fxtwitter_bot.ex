@@ -142,16 +142,16 @@ defmodule FxtwitterBot do
     end
   end
 
-  defp add_from(message, %{id: id} = from) do
+  defp add_from(message, from) do
     name = get_name(from)
 
     """
-    _Shared by_ [#{name}](tg://user?id=#{id})
+    Shared by #{name}
 
     #{message}
     """
   end
 
   defp get_name(%{username: nil, first_name: first_name}), do: first_name
-  defp get_name(%{username: username}), do: username
+  defp get_name(%{username: username}), do: "@#{username}"
 end

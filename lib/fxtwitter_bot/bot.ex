@@ -38,7 +38,6 @@ defmodule FxtwitterBot.Bot do
       deleted_message? = FxtwitterBot.maybe_delete_message(chat_id, message_id)
       message = FxtwitterBot.maybe_add_from(deleted_message?, message, from)
       opts = FxtwitterBot.get_opts_from_config(deleted_message?, message_id)
-      opts = Keyword.merge(opts, parse_mode: "Markdown")
       answer(context, message, opts)
     end
   end
@@ -54,6 +53,9 @@ defmodule FxtwitterBot.Bot do
     {message, opts} = FxtwitterBot.change_config(data)
     edit(context, :inline, message, opts)
   end
+
+  def handle(_, _), do: :ignore
+  def handle(_), do: :ignore
 
   defp generate_articles(message) do
     [
