@@ -8,6 +8,7 @@ defmodule FxtwitterBot.Bot do
   command("start", description: "Says hi")
   command("help", description: "Print the bot's help")
   command("about", description: "Who made the bot and source code")
+  command("config", description: "Edit the bot config")
 
   middleware(ExGram.Middleware.IgnoreUsername)
 
@@ -27,9 +28,17 @@ defmodule FxtwitterBot.Bot do
     answer(context, message, opts)
   end
 
-  def handle({:text, text, %{message_id: message_id}}, context) do
+  def handle({:command, :config, %{chat: %{id: chat_id}}}, context) do
+    {message, opts} = FxtwitterBot.config(chat_id)
+    answer(context, message, opts)
+  end
+
+  def handle({:text, text, %{from: from, chat: %{id: chat_id}, message_id: message_id}}, context) do
     with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
-      opts = [reply_to_message_id: message_id]
+      deleted_message? = FxtwitterBot.maybe_delete_message(chat_id, message_id)
+      message = FxtwitterBot.maybe_add_from(deleted_message?, message, from)
+      opts = FxtwitterBot.get_opts_from_config(deleted_message?, message_id)
+      opts = Keyword.merge(opts, parse_mode: "Markdown")
       answer(context, message, opts)
     end
   end
@@ -39,6 +48,11 @@ defmodule FxtwitterBot.Bot do
       articles = generate_articles(message)
       answer_inline_query(context, articles)
     end
+  end
+
+  def handle({:callback_query, %{data: data}}, context) do
+    {message, opts} = FxtwitterBot.change_config(data)
+    edit(context, :inline, message, opts)
   end
 
   defp generate_articles(message) do

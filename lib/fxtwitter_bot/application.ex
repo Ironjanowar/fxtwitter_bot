@@ -10,6 +10,7 @@ defmodule FxtwitterBot.Application do
     token = ExGram.Config.get(:ex_gram, :token)
 
     children = [
+      {Redix, [name: :redix]},
       ExGram,
       {FxtwitterBot.Bot, [method: :polling, token: token]}
     ]
