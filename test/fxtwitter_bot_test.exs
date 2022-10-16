@@ -25,6 +25,14 @@ defmodule FxtwitterBotTest do
       assert {:ok, result} = FxtwitterBot.replace_urls("http://mobile.twitter.com/user")
       assert result == "https://fxtwitter.com/user"
 
+      assert {:ok, result} =
+               FxtwitterBot.replace_urls(
+                 "https://twitter.com/archillect/status/1581623858918207488?s=20&t=0u3LTLBA9MRq7FA-_Ucxow"
+               )
+
+      assert result ==
+               "https://fxtwitter.com/archillect/status/1581623858918207488?s=20&t=0u3LTLBA9MRq7FA-_Ucxow"
+
       text = """
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       https://twitter.com/user
