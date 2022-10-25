@@ -3,23 +3,9 @@ defmodule FxtwitterBot do
 
   import ExGram.Dsl.Keyboard
 
-  @twitter_regex ~r/https?:\/\/(www\.|mobile\.)?twitter.com/
-  def maybe_fix(text) when is_binary(text) do
-    if String.match?(text, @twitter_regex) do
-      replace_urls(text)
-    else
-      {:error, "No match"}
-    end
-  end
+  alias __MODULE__.Fixer
 
-  def maybe_fix(_), do: {:error, "Not a string"}
-
-  def replace_urls(text) when is_binary(text) do
-    result = Regex.replace(@twitter_regex, text, "https://fxtwitter.com")
-    {:ok, result}
-  end
-
-  def replace_urls(_), do: {:error, "Not a string"}
+  defdelegate maybe_fix(text), to: Fixer
 
   def config(chat_id) do
     delete_message? = get_config(chat_id)
