@@ -17,10 +17,6 @@ defmodule FxtwitterBot.FixerTest do
       assert {:ok, result} = Fixer.maybe_fix("http://www.twitter.com/user")
       assert result == "https://fxtwitter.com/user"
 
-      assert {:error, "No match"} = Fixer.maybe_fix("https://fxtwitter.com/user")
-
-      assert {:error, "No match"} = Fixer.maybe_fix("twitter.com/user")
-
       assert {:ok, result} = Fixer.maybe_fix("http://mobile.twitter.com/user")
       assert result == "https://fxtwitter.com/user"
 
@@ -54,8 +50,20 @@ defmodule FxtwitterBot.FixerTest do
       assert result == expected
     end
 
-    test "no replace" do
-      assert {:error, "No match"} == Fixer.maybe_fix("no replace")
+    test "other services work" do
+      assert {:ok, result} = Fixer.maybe_fix("https://instagram.com/user")
+      assert result == "https://ddinstagram.com/user"
+
+      assert {:ok, result} = Fixer.maybe_fix("https://vm.tiktok.com/user")
+      assert result == "https://vm.dstn.to/user"
+    end
+
+    test "no match" do
+      assert {:error, "No match"} = Fixer.maybe_fix("https://fxtwitter.com/user")
+
+      assert {:error, "No match"} = Fixer.maybe_fix("twitter.com/user")
+
+      assert {:error, "No match"} == Fixer.maybe_fix("no match")
     end
 
     test "not a string" do
