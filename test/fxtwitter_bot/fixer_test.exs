@@ -5,20 +5,20 @@ defmodule FxtwitterBot.FixerTest do
 
   describe "maybe_fix/1" do
     test "works" do
-      assert {:ok, result} = Fixer.maybe_fix("https://twitter.com/user")
-      assert result == "https://fxtwitter.com/user"
+      assert {:ok, result} = Fixer.maybe_fix("https://twitter.com/rickroll/status/1093270903599726593")
+      assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("https://www.twitter.com/user")
-      assert result == "https://fxtwitter.com/user"
+      assert {:ok, result} = Fixer.maybe_fix("https://www.twitter.com/rickroll/status/1093270903599726593")
+      assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("http://twitter.com/user")
-      assert result == "https://fxtwitter.com/user"
+      assert {:ok, result} = Fixer.maybe_fix("http://twitter.com/rickroll/status/1093270903599726593")
+      assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("http://www.twitter.com/user")
-      assert result == "https://fxtwitter.com/user"
+      assert {:ok, result} = Fixer.maybe_fix("http://www.twitter.com/rickroll/status/1093270903599726593")
+      assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("http://mobile.twitter.com/user")
-      assert result == "https://fxtwitter.com/user"
+      assert {:ok, result} = Fixer.maybe_fix("http://mobile.twitter.com/rickroll/status/1093270903599726593")
+      assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
       assert {:ok, result} =
                Fixer.maybe_fix(
@@ -30,20 +30,20 @@ defmodule FxtwitterBot.FixerTest do
 
       text = """
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      https://twitter.com/user
+      https://twitter.com/rickroll/status/1093270903599726593
 
-      Suspendisse elementum https://twitter.com/user ante vitae
+      Suspendisse elementum https://twitter.com/rickroll/status/1093270903599726593 ante vitae
 
-      dapibus convallis. Phasellus scelerisque mollis arcu suscipit https://twitter.com/user
+      dapibus convallis. Phasellus scelerisque mollis arcu suscipit https://twitter.com/rickroll/status/1093270903599726593
       """
 
       expected = """
       Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      https://fxtwitter.com/user
+      https://fxtwitter.com/rickroll/status/1093270903599726593
 
-      Suspendisse elementum https://fxtwitter.com/user ante vitae
+      Suspendisse elementum https://fxtwitter.com/rickroll/status/1093270903599726593 ante vitae
 
-      dapibus convallis. Phasellus scelerisque mollis arcu suscipit https://fxtwitter.com/user
+      dapibus convallis. Phasellus scelerisque mollis arcu suscipit https://fxtwitter.com/rickroll/status/1093270903599726593
       """
 
       assert {:ok, result} = Fixer.maybe_fix(text)

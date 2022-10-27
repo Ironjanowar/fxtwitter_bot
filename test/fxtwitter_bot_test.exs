@@ -4,8 +4,8 @@ defmodule FxtwitterBotTest do
 
   describe "maybe_fix/1" do
     test "works" do
-      assert {:ok, result} = FxtwitterBot.maybe_fix("https://twitter.com/user")
-      assert result == "https://fxtwitter.com/user"
+      assert {:ok, result} = FxtwitterBot.maybe_fix("https://twitter.com/rickroll/status/1093270903599726593")
+      assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
     end
 
     test "no match" do
