@@ -35,11 +35,14 @@ defmodule FxtwitterBot.Bot do
     answer(context, message, opts)
   end
 
-  def handle({:text, text, %{from: from, chat: %{id: chat_id}, message_id: message_id}}, context) do
+  def handle({:text, text, m}, context) do
+    %{from: from, chat: %{id: chat_id}, message_id: message_id} = m
+
     with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
       deleted_message? = FxtwitterBot.maybe_delete_message(chat_id, message_id)
       message = FxtwitterBot.maybe_add_from(deleted_message?, message, from)
-      opts = FxtwitterBot.get_opts_from_config(deleted_message?, message_id)
+      opts = FxtwitterBot.get_opts_from_config(deleted_message?, message_id, m[:reply_to_message])
+
       answer(context, message, opts)
     end
   end

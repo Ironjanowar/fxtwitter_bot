@@ -9,9 +9,9 @@ defmodule FxtwitterBot.Fixer do
   @tiktok_regex ~r/https?:\/\/vm.tiktok.com/
   @tiktok_fix "https://vm.dstn.to"
 
-  @all_regex    [@twitter_regex, @instagram_regex, @tiktok_regex]
+  @all_regex [@twitter_regex, @instagram_regex, @tiktok_regex]
   @all_replaces [@twitter_replace, @instagram_regex, @tiktok_regex]
-  @all_fixes    [@twitter_fix, @instagram_fix, @tiktok_fix]
+  @all_fixes [@twitter_fix, @instagram_fix, @tiktok_fix]
 
   @regex_to_fix Enum.zip(@all_replaces, @all_fixes)
 

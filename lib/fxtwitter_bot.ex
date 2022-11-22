@@ -56,13 +56,18 @@ defmodule FxtwitterBot do
   defp config_to_boolean("enable"), do: true
   defp config_to_boolean("disable"), do: false
 
-  def get_opts_from_config(deleted_message?, message_id) do
+  def get_opts_from_config(deleted_message?, message_id, message_replied) do
     if deleted_message? do
-      []
+      maybe_reply_to_message_id(message_replied)
     else
       [reply_to_message_id: message_id]
     end
   end
+
+  defp maybe_reply_to_message_id(%{message_id: message_id}) when not is_nil(message_id),
+    do: [reply_to_message_id: message_id]
+
+  defp maybe_reply_to_message_id(_), do: []
 
   def maybe_delete_message(chat_id, message_id) do
     case RedisClient.get(chat_id) do

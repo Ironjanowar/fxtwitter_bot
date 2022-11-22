@@ -5,19 +5,29 @@ defmodule FxtwitterBot.FixerTest do
 
   describe "maybe_fix/1" do
     test "works" do
-      assert {:ok, result} = Fixer.maybe_fix("https://twitter.com/rickroll/status/1093270903599726593")
+      assert {:ok, result} =
+               Fixer.maybe_fix("https://twitter.com/rickroll/status/1093270903599726593")
+
       assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("https://www.twitter.com/rickroll/status/1093270903599726593")
+      assert {:ok, result} =
+               Fixer.maybe_fix("https://www.twitter.com/rickroll/status/1093270903599726593")
+
       assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("http://twitter.com/rickroll/status/1093270903599726593")
+      assert {:ok, result} =
+               Fixer.maybe_fix("http://twitter.com/rickroll/status/1093270903599726593")
+
       assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("http://www.twitter.com/rickroll/status/1093270903599726593")
+      assert {:ok, result} =
+               Fixer.maybe_fix("http://www.twitter.com/rickroll/status/1093270903599726593")
+
       assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
-      assert {:ok, result} = Fixer.maybe_fix("http://mobile.twitter.com/rickroll/status/1093270903599726593")
+      assert {:ok, result} =
+               Fixer.maybe_fix("http://mobile.twitter.com/rickroll/status/1093270903599726593")
+
       assert result == "https://fxtwitter.com/rickroll/status/1093270903599726593"
 
       assert {:ok, result} =
