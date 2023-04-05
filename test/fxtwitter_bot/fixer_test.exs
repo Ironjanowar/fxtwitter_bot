@@ -66,6 +66,9 @@ defmodule FxtwitterBot.FixerTest do
 
       assert {:ok, result} = Fixer.maybe_fix("https://vm.tiktok.com/user")
       assert result == "https://vm.dstn.to/user"
+
+      assert {:ok, result} = Fixer.maybe_fix("https://www.tiktok.com/user")
+      assert result == "https://www.vxtiktok.com/user"
     end
 
     test "no match" do

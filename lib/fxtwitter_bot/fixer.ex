@@ -6,12 +6,15 @@ defmodule FxtwitterBot.Fixer do
   @instagram_regex ~r/https?:\/\/(www\.)?instagram.com/
   @instagram_fix "https://ddinstagram.com"
 
-  @tiktok_regex ~r/https?:\/\/vm.tiktok.com/
-  @tiktok_fix "https://vm.dstn.to"
+  @tiktok_vm_regex ~r/https?:\/\/vm.tiktok.com/
+  @tiktok_vm_fix "https://vm.dstn.to"
 
-  @all_regex [@twitter_regex, @instagram_regex, @tiktok_regex]
-  @all_replaces [@twitter_replace, @instagram_regex, @tiktok_regex]
-  @all_fixes [@twitter_fix, @instagram_fix, @tiktok_fix]
+  @tiktok_regex ~r/https?:\/\/www.tiktok.com/
+  @tiktok_fix "https://www.vxtiktok.com"
+
+  @all_regex [@twitter_regex, @instagram_regex, @tiktok_regex, @tiktok_vm_regex]
+  @all_replaces [@twitter_replace, @instagram_regex, @tiktok_regex, @tiktok_vm_regex]
+  @all_fixes [@twitter_fix, @instagram_fix, @tiktok_fix, @tiktok_vm_fix]
 
   @regex_to_fix Enum.zip(@all_replaces, @all_fixes)
 
