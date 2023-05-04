@@ -10,7 +10,7 @@ token:
 export BOT_TOKEN = $(shell cat bot.token)
 
 start: token
-	_build/dev/rel/fxtwitter_bot/bin/fxtwitter_bot daemon
+	_build/$(MIX_ENV)/rel/fxtwitter_bot/bin/fxtwitter_bot daemon
 
 iex: token
 	iex -S mix
@@ -23,22 +23,25 @@ purge: clean
 	rm mix.lock
 
 stop:
-	_build/dev/rel/fxtwitter_bot/bin/fxtwitter_bot stop
+	_build/$(MIX_ENV)/rel/fxtwitter_bot/bin/fxtwitter_bot stop
 
 attach:
-	_build/dev/rel/fxtwitter_bot/bin/fxtwitter_bot remote
+	_build/$(MIX_ENV)/rel/fxtwitter_bot/bin/fxtwitter_bot remote
 
 release: deps compile
-	mix release
+	mix release --overwrite
 
 debug: token
-	_build/dev/rel/fxtwitter_bot/bin/fxtwitter_bot console
+	_build/$(MIX_ENV)/rel/fxtwitter_bot/bin/fxtwitter_bot console
 
 error_logs:
 	tail -n 20 -f log/error.log
 
 debug_logs:
 	tail -n 20 -f log/debug.log
+
+logs:
+	tail -n 20 -f log/warn.log
 
 db_setup: compile
 	mix ecto.create
