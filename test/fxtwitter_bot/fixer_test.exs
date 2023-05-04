@@ -60,10 +60,17 @@ defmodule FxtwitterBot.FixerTest do
       assert result == expected
     end
 
-    test "other services work" do
-      assert {:ok, result} = Fixer.maybe_fix("https://instagram.com/user")
-      assert result == "https://ddinstagram.com/user"
+    test "instagram works" do
+      assert {:ok, result} = Fixer.maybe_fix("https://instagram.com/p/post1")
+      assert result == "https://ddinstagram.com/p/post1"
 
+      assert {:ok, result} = Fixer.maybe_fix("https://instagram.com/reel/reel1")
+      assert result == "https://ddinstagram.com/reel/reel1"
+
+      assert {:error, "No match"} = Fixer.maybe_fix("https://instagram.com/user")
+    end
+
+    test "other services work" do
       assert {:ok, result} = Fixer.maybe_fix("https://vm.tiktok.com/user")
       assert result == "https://vm.dstn.to/user"
 
