@@ -3,6 +3,10 @@ defmodule FxtwitterBot.Fixer do
   @twitter_replace ~r/https?:\/\/(www\.|mobile\.)?twitter.com/
   @twitter_fix "https://fxtwitter.com"
 
+  @xtwitter_regex ~r/https?:\/\/(www\.|mobile\.)?x.com\/.+\/status/
+  @xtwitter_replace ~r/https?:\/\/(www\.|mobile\.)?x.com/
+  @xtwitter_fix "https://fixupx.com"
+
   @instagram_regex ~r/https?:\/\/(www\.)?instagram.com\/(p|reel)/
   @instagram_replace ~r/https?:\/\/(www\.)?instagram.com/
   @instagram_fix "https://ddinstagram.com"
@@ -13,9 +17,21 @@ defmodule FxtwitterBot.Fixer do
   @tiktok_regex ~r/https?:\/\/www.tiktok.com/
   @tiktok_fix "https://www.vxtiktok.com"
 
-  @all_regex [@twitter_regex, @instagram_regex, @tiktok_regex, @tiktok_vm_regex]
-  @all_replaces [@twitter_replace, @instagram_replace, @tiktok_regex, @tiktok_vm_regex]
-  @all_fixes [@twitter_fix, @instagram_fix, @tiktok_fix, @tiktok_vm_fix]
+  @all_regex [
+    @twitter_regex,
+    @instagram_regex,
+    @tiktok_regex,
+    @tiktok_vm_regex,
+    @xtwitter_regex
+  ]
+  @all_replaces [
+    @twitter_replace,
+    @instagram_replace,
+    @tiktok_regex,
+    @tiktok_vm_regex,
+    @xtwitter_replace
+  ]
+  @all_fixes [@twitter_fix, @instagram_fix, @tiktok_fix, @tiktok_vm_fix, @xtwitter_fix]
 
   @regex_to_fix Enum.zip(@all_replaces, @all_fixes)
 
