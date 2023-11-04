@@ -93,4 +93,12 @@ defmodule FxtwitterBot.FixerTest do
       assert {:error, "Not a string"} == Fixer.maybe_fix(1)
     end
   end
+
+  test "toggle_mp4/1" do
+    assert Fixer.toggle_mp4("https://vm.dstn.to/ZGJE2323n3") ==
+             {:ok, "https://vm.dstn.to/ZGJE2323n3/video.mp4"}
+
+    assert Fixer.toggle_mp4("https://vm.dstn.to/ZGJE2323n3/video.mp4") ==
+             {:ok, "https://vm.dstn.to/ZGJE2323n3"}
+  end
 end

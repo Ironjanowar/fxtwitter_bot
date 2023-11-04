@@ -93,4 +93,32 @@ defmodule FxtwitterBot do
       message
     end
   end
+
+  def maybe_add_mp4_button(opts, :tiktok_vm) do
+    keyboard = generate_mp4_keyboard()
+
+    Keyword.put(opts, :reply_markup, keyboard)
+  end
+
+  def maybe_add_mp4_button(opts, _), do: opts
+
+  defp generate_mp4_keyboard() do
+    text = "Toggle MP4 video"
+    data = "toggle_mp4"
+
+    keyboard :inline do
+      row do
+        button(text, callback_data: data)
+      end
+    end
+  end
+
+  def toggle_mp4(text) do
+    opts = [reply_markup: generate_mp4_keyboard()]
+
+    case Fixer.toggle_mp4(text) do
+      {:ok, text} -> {:ok, text, opts}
+      error -> error
+    end
+  end
 end
