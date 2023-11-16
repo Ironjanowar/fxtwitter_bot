@@ -12,45 +12,64 @@ defmodule FxtwitterBot.Fixer do
   @instagram_fix "https://ddinstagram.com"
 
   @tiktok_vm_regex ~r/https?:\/\/vm.tiktok.com/
+  @tiktok_vm_toggle_regex ~r/(?<url>https?:\/\/vm.dstn.to\/[^\s\/]+)(?<video>\/video.mp4)?/
   @tiktok_vm_fix "https://vm.dstn.to"
 
   @tiktok_regex ~r/https?:\/\/www.tiktok.com/
   @tiktok_fix "https://www.vxtiktok.com"
 
-  @all_regex [
-    @twitter_regex,
-    @instagram_regex,
-    @tiktok_regex,
-    @tiktok_vm_regex,
-    @xtwitter_regex
-  ]
-  @all_replaces [
-    @twitter_replace,
-    @instagram_replace,
-    @tiktok_regex,
-    @tiktok_vm_regex,
-    @xtwitter_replace
-  ]
-  @all_fixes [@twitter_fix, @instagram_fix, @tiktok_fix, @tiktok_vm_fix, @xtwitter_fix]
-
-  @regex_to_fix Enum.zip(@all_replaces, @all_fixes)
+  @all_regex %{
+    twitter: @twitter_regex,
+    instagram: @instagram_regex,
+    tiktok: @tiktok_regex,
+    tiktok_vm: @tiktok_vm_regex,
+    xtwitter: @xtwitter_regex
+  }
+  @all_replaces %{
+    twitter: @twitter_replace,
+    instagram: @instagram_replace,
+    tiktok: @tiktok_regex,
+    tiktok_vm: @tiktok_vm_regex,
+    xtwitter: @xtwitter_replace
+  }
+  @all_fixes %{
+    twitter: @twitter_fix,
+    instagram: @instagram_fix,
+    tiktok: @tiktok_fix,
+    tiktok_vm: @tiktok_vm_fix,
+    xtwitter: @xtwitter_fix
+  }
 
   def maybe_fix(text) when is_binary(text) do
-    if Enum.any?(@all_regex, &String.match?(text, &1)) do
-      fix_text(text)
-    else
-      {:error, "No match"}
+    case Enum.find(@all_regex, fn {_site, regex} -> String.match?(text, regex) end) do
+      {site, _} -> fix_text(text, site)
+      _ -> {:error, "No match"}
     end
   end
 
   def maybe_fix(_), do: {:error, "Not a string"}
 
-  defp fix_text(text) do
-    result =
-      Enum.reduce(@regex_to_fix, text, fn {regex, fix}, text ->
-        Regex.replace(regex, text, fix)
-      end)
+  defp fix_text(text, site) do
+    regex = @all_replaces[site]
+    fix = @all_fixes[site]
+    result = Regex.replace(regex, text, fix)
 
-    {:ok, result}
+    {:ok, result, site}
   end
+
+  def toggle_mp4(text) when is_binary(text) do
+    text =
+      case Regex.named_captures(@tiktok_vm_toggle_regex, text) do
+        %{"url" => url, "video" => ""} ->
+          new_url = "#{url}/video.mp4"
+          Regex.replace(@tiktok_vm_toggle_regex, text, new_url)
+
+        %{"url" => url} ->
+          Regex.replace(@tiktok_vm_toggle_regex, text, url)
+      end
+
+    {:ok, text}
+  end
+
+  def toggle_mp4(_), do: {:error, "Not a string"}
 end

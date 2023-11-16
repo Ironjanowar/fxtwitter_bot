@@ -38,12 +38,16 @@ defmodule FxtwitterBot.Bot do
   def handle({:text, text, m}, context) do
     %{from: from, chat: %{id: chat_id}, message_id: message_id} = m
 
-    with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
+    with {:ok, text, site} <- FxtwitterBot.maybe_fix(text) do
       deleted_message? = FxtwitterBot.maybe_delete_message(chat_id, message_id)
-      message = FxtwitterBot.maybe_add_from(deleted_message?, message, from)
-      opts = FxtwitterBot.get_opts_from_config(deleted_message?, message_id, m[:reply_to_message])
+      text = FxtwitterBot.maybe_add_from(deleted_message?, text, from)
 
-      answer(context, message, opts)
+      opts =
+        deleted_message?
+        |> FxtwitterBot.get_opts_from_config(message_id, m[:reply_to_message])
+        |> FxtwitterBot.maybe_add_mp4_button(site)
+
+      answer(context, text, opts)
     end
   end
 
@@ -51,6 +55,14 @@ defmodule FxtwitterBot.Bot do
     with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
       articles = generate_articles(message)
       answer_inline_query(context, articles)
+    end
+  end
+
+  def handle({:callback_query, %{data: "toggle_mp4"} = m}, context) do
+    %{message: %{text: text}} = m
+
+    with {:ok, text, opts} <- FxtwitterBot.toggle_mp4(text) do
+      edit(context, :inline, text, opts)
     end
   end
 
@@ -67,7 +79,7 @@ defmodule FxtwitterBot.Bot do
       %ExGram.Model.InlineQueryResultArticle{
         type: "article",
         id: "1",
-        title: "Fix Twitter preview",
+        title: "Fix preview",
         input_message_content: %ExGram.Model.InputTextMessageContent{message_text: message}
       }
     ]
