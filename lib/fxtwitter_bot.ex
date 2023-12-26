@@ -94,14 +94,6 @@ defmodule FxtwitterBot do
     end
   end
 
-  def maybe_add_mp4_button(opts, :tiktok_vm) do
-    keyboard = generate_mp4_keyboard()
-
-    Keyword.put(opts, :reply_markup, keyboard)
-  end
-
-  def maybe_add_mp4_button(opts, _), do: opts
-
   defp generate_mp4_keyboard() do
     text = "Toggle MP4 video"
     data = "toggle_mp4"

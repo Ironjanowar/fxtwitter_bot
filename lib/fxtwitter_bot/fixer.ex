@@ -12,8 +12,8 @@ defmodule FxtwitterBot.Fixer do
   @instagram_fix "https://ddinstagram.com"
 
   @tiktok_vm_regex ~r/https?:\/\/vm.tiktok.com/
-  @tiktok_vm_toggle_regex ~r/(?<url>https?:\/\/vm.dstn.to\/[^\s\/]+)(?<video>\/video.mp4)?/
-  @tiktok_vm_fix "https://vm.dstn.to"
+  @tiktok_vm_toggle_regex ~r/(?<url>https?:\/\/vm.vxtiktok.com\/[^\s\/]+)(?<video>\/video.mp4)?/
+  @tiktok_vm_fix "https://vm.vxtiktok.com"
 
   @tiktok_regex ~r/https?:\/\/www.tiktok.com/
   @tiktok_fix "https://www.vxtiktok.com"
