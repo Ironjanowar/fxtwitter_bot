@@ -51,6 +51,6 @@ defmodule FxtwitterBot.MessageFormatter do
     """
   end
 
-  defp get_name(%{username: nil, first_name: first_name}), do: first_name
-  defp get_name(%{username: username}), do: "@#{username}"
+  defp get_name(%{username: username}) when is_binary(username), do: "@#{username}"
+  defp get_name(%{first_name: first_name}), do: first_name
 end
