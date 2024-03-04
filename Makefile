@@ -10,6 +10,9 @@ token:
 export BOT_TOKEN = $(shell cat bot.token)
 
 start: token
+	_build/$(MIX_ENV)/rel/fxtwitter_bot/bin/fxtwitter_bot start
+
+daemon: token
 	_build/$(MIX_ENV)/rel/fxtwitter_bot/bin/fxtwitter_bot daemon
 
 iex: token
