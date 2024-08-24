@@ -49,7 +49,7 @@ defmodule FxtwitterBot.Bot do
   end
 
   def handle({:inline_query, %{query: text}}, context) do
-    with {:ok, message} <- FxtwitterBot.maybe_fix(text) do
+    with {:ok, message, _site} <- FxtwitterBot.maybe_fix(text) do
       articles = generate_articles(message)
       answer_inline_query(context, articles)
     end

@@ -1,11 +1,11 @@
 import Config
 
 config :logger,
-  level: :warn,
+  level: :warning,
   truncate: :infinity,
-  backends: [{LoggerFileBackend, :warn}]
+  backends: [{LoggerFileBackend, :warning}]
 
 config :logger, :error,
-  path: "log/warn.log",
-  level: :warn,
+  path: "log/warning.log",
+  level: :warning,
   format: "$dateT$timeZ [$level] $message\n"
