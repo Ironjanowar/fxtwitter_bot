@@ -1,11 +1,11 @@
 defmodule FxtwitterBot.MessageFormatter do
   def help() do
     message = """
-    This bots fixes Twitter links using [FixTweet](https://github.com/FixTweet/FixTweet), whenever it detects a Twitter link it will try to fix it
+    This bots fixes Twitter, TikTok and Instagram links using [FixTweet](https://github.com/FixTweet/FixTweet), [VxTikTok](https://github.com/dylanpdx/vxtiktok) and [DDInstagram](https://ddinstagram.com/)\\. Whenever it detects a link it will try to fix it
 
     Use /config to select if the bot should delete or answer the original message
 
-    _Add the bot to any chat and give him administrator permissions so it can read all the messages_
+    _Add the bot to any chat and give it administrator permissions so it can read all the messages_
     """
 
     opts = [parse_mode: "MarkdownV2"]
@@ -49,6 +49,18 @@ defmodule FxtwitterBot.MessageFormatter do
 
     #{message}
     """
+  end
+
+  def donate() do
+    message = """
+    *Thank you for considering supporting me\\!* If you’d like to invite me to a coffee, you can do so by making a donation via [PayPal](https://paypal.me/ironjanowar)\\. Your generosity helps me continue creating great bots :\\)
+
+    Every little bit helps and is greatly appreciated\\. Thank you for your support\\!
+    """
+
+    opts = [parse_mode: "MarkdownV2"]
+
+    {message, opts}
   end
 
   defp get_name(%{username: username}) when is_binary(username), do: "@#{username}"

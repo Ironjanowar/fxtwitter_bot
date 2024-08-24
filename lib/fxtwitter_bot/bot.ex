@@ -11,6 +11,7 @@ defmodule FxtwitterBot.Bot do
   command("help", description: "Print the bot's help")
   command("about", description: "Who made the bot and source code")
   command("config", description: "Edit the bot config")
+  command("donate", description: "Shows how to donate to the bot creator")
 
   middleware(ExGram.Middleware.IgnoreUsername)
 
@@ -27,6 +28,11 @@ defmodule FxtwitterBot.Bot do
 
   def handle({:command, :about, _msg}, context) do
     {message, opts} = MessageFormatter.about()
+    answer(context, message, opts)
+  end
+
+  def handle({:command, :donate, _msg}, context) do
+    {message, opts} = MessageFormatter.donate()
     answer(context, message, opts)
   end
 
