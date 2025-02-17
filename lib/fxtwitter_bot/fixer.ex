@@ -18,26 +18,33 @@ defmodule FxtwitterBot.Fixer do
   @tiktok_regex ~r/https?:\/\/www.tiktok.com/
   @tiktok_fix "https://www.vxtiktok.com"
 
+  @bsky_regex ~r/https?:\/\/(www\.)?bsky.app\/.+\/post/
+  @bsky_replace ~r/https?:\/\/(www\.)?bsky.app/
+  @bsky_fix "https://fxbsky.app.com"
+
   @all_regex %{
     twitter: @twitter_regex,
     instagram: @instagram_regex,
     tiktok: @tiktok_regex,
     tiktok_vm: @tiktok_vm_regex,
-    xtwitter: @xtwitter_regex
+    xtwitter: @xtwitter_regex,
+    bsky: @bsky_regex
   }
   @all_replaces %{
     twitter: @twitter_replace,
     instagram: @instagram_replace,
     tiktok: @tiktok_regex,
     tiktok_vm: @tiktok_vm_regex,
-    xtwitter: @xtwitter_replace
+    xtwitter: @xtwitter_replace,
+    bsky: @bsky_replace
   }
   @all_fixes %{
     twitter: @twitter_fix,
     instagram: @instagram_fix,
     tiktok: @tiktok_fix,
     tiktok_vm: @tiktok_vm_fix,
-    xtwitter: @xtwitter_fix
+    xtwitter: @xtwitter_fix,
+    bsky: @bsky_fix
   }
 
   def maybe_fix(text) when is_binary(text) do
